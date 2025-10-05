@@ -55,6 +55,7 @@
             box-shadow: var(--card-shadow);
             transition: var(--transition);
             margin-bottom: 20px;
+            max-height:800px;
         }
 
         .card:hover {
@@ -1948,6 +1949,7 @@
                         //更新数据统计
                         renderSaleList();
                         rendeCustomerSaleList();
+                        loadUserData();
                     }
                 });
             });
@@ -1961,9 +1963,6 @@
                     document.getElementById(targetSection).classList.add('active-section');
                 });
             });
-
-
-            loadUserData();
 
             // 初始化显示
             renderProducts();
@@ -2452,31 +2451,13 @@
             // 设置toDate为当天的结束时间
             toDate.setHours(23, 59, 59, 999);
 
-            // 筛选条件：日期范围内，并且客户匹配，并且包含指定商品名称
-            const filteredOrders = orders.filter(order => {
-                const orderDate = new Date(order.date);
-                // 日期条件
-                const inDateRange = orderDate >= fromDate && orderDate <= toDate;
-                // 客户条件
-                const customerMatch = customerFilter ? order.customerId === customerFilter : true;
-                // 商品条件：订单中至少有一个商品名称包含输入的文字（不区分大小写）
-                const productMatch = productFilter ? order.items.some(item => item.name.toLowerCase().includes(productFilter)) : true;
-
-                if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) {
-                    return customerMatch && productMatch;
-                } else {
-                    return inDateRange && customerMatch && productMatch;
-                }
-                
-            });
-
             const saleList = document.getElementById('sale-list');
-            if (filteredOrders.length) {
+            if (orders.length) {
                 saleList.innerHTML = "";
 
                 // 合并所有订单中的商品
                 const allItems = [];
-                filteredOrders.forEach(order => {
+                orders.forEach(order => {
                     order.items.forEach(item => {
                         const existingItem = allItems.find(i => i.code === item.code && i.customerName === order.customerName);
                         if (existingItem) {
@@ -2491,19 +2472,35 @@
                                 price: item.price,
                                 quantity: 1,
                                 totalPrice: item.price,
+                                date: order.date,
+                                customerId: order.customerId,
                                 customerName: order.customerName || '未选择'
                             });
                         }
                     });
                 });
 
-                allItems.forEach(item => {
+                // 筛选条件：日期范围内，并且客户匹配，并且包含指定商品名称
+                const filteredAllItems = allItems.filter(order => {
+                    const orderDate = new Date(order.date);
+                    // 日期条件
+                    const inDateRange = (isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) ? true : orderDate >= fromDate && orderDate <= toDate;
+                    // 客户条件
+                    const customerMatch = customerFilter ? order.customerId === customerFilter : true;
+                    // 商品条件：订单中至少有一个商品名称包含输入的文字（不区分大小写）
+                    const productMatch = productFilter ? order.name.toLowerCase().includes(productFilter) : true;
+
+                    return inDateRange && customerMatch && productMatch;
+
+                });
+
+                filteredAllItems.forEach(item => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
                     <td>${item.customerName}</td>
                     <td>${item.name}</td>
                     <td>${item.quantity}</td>
-                    <td>¥${item.totalPrice}</td>
+                    <td>¥${item.totalPrice.toFixed(2) }</td>
                     <td>${item.style}</td>
                     <td>${item.type}</td>
                     
@@ -2518,41 +2515,16 @@
 
         // 渲染客户金额统计列表
         function rendeCustomerSaleList() {
-            const fromDate = new Date(document.getElementById('report-date-from').value);
-            const toDate = new Date(document.getElementById('report-date-to').value);
 
-            const customerFilter = document.getElementById('report-customer').value;
-            const productFilter = document.getElementById('report-product').value.toLowerCase();
-
-            // 设置toDate为当天的结束时间
-            toDate.setHours(23, 59, 59, 999);
-
-            // 筛选条件：日期范围内，并且客户匹配，并且包含指定商品名称
-            const filteredOrders = orders.filter(order => {
-                const orderDate = new Date(order.date);
-                // 日期条件
-                const inDateRange = orderDate >= fromDate && orderDate <= toDate;
-                // 客户条件
-                const customerMatch = customerFilter ? order.customerId === customerFilter : true;
-                // 商品条件：订单中至少有一个商品名称包含输入的文字（不区分大小写）
-                const productMatch = productFilter ? order.items.some(item => item.name.toLowerCase().includes(productFilter)) : true;
-
-                if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) {
-                    return customerMatch && productMatch;
-                } else {
-                    return inDateRange && customerMatch && productMatch;
-                }
-
-            });
 
             const saleList = document.getElementById('sale-customer-list');
-            if (filteredOrders.length) {
+            if (orders.length) {
                 saleList.innerHTML = "";
 
                 // 合并所有订单中的商品
                 const allItems = [];
                 let lastOrderId = 0;
-                filteredOrders.forEach(order => {
+                orders.forEach(order => {
                     order.items.forEach(item => {
                         const existingItem = allItems.find(i => i.customerName === order.customerName);
                         if (existingItem) {
@@ -2577,7 +2549,7 @@
                     row.innerHTML = `
                     <td>${item.customerName}</td>
                     <td>${item.quantity}</td>
-                    <td>¥${item.totalPrice}</td>
+                    <td>¥${item.totalPrice.toFixed(2) }</td>
                     <td>¥${(item.totalPrice / item.quantity).toFixed(2) }</td>
                  `;
                     saleList.appendChild(row);
@@ -3926,7 +3898,7 @@
 
             }
 
-            return "¥"+totalPrice;
+            return "¥" + totalPrice.toFixed(2);
         }
 
         function getOrderCount(orders, fromDate, toDate) {
