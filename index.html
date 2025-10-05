@@ -55,7 +55,6 @@
             box-shadow: var(--card-shadow);
             transition: var(--transition);
             margin-bottom: 20px;
-            max-height:800px;
         }
 
         .card:hover {
@@ -1369,7 +1368,7 @@
                 </div>
                 <div class="card-body">
                     <div class="data-table-container">
-                        <table class="data-table">
+                        <table class="data-table" style="max-height: 800px;">
                             <thead>
                                 <tr>
                                     <th width="20%">客户</th>
@@ -1397,7 +1396,7 @@
                 </div>
                 <div class="card-body">
                     <div class="data-table-container">
-                        <table class="data-table">
+                        <table class="data-table" style="max-height: 800px;">
                             <thead>
                                 <tr>
                                     <th width="10%">客户名</th>
@@ -3414,7 +3413,7 @@
                                 totalConsumption: parseFloat(item['累计消费'] || 0),
                                 code: item['备注'] || ''
                             };
-                        }).filter(item => item.code && item.name); // 过滤无效数据
+                        }).filter(item => item.id && item.name); // 过滤无效数据
                     }
 
                     if (dataToImport.length === 0) {
