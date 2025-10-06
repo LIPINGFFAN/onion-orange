@@ -1790,7 +1790,7 @@
                     <div class="data-table-container" style="max-height: 800px;">
                         <table class="data-table">
                             <thead>
-                                <tr>
+                                <tr style="background-color: #a29bfe">
                                     <th width="15%">客户</th>
                                     <th width="15%">商品名称</th>
                                     <th width="10%">数量</th>
@@ -1818,7 +1818,7 @@
                     <div class="data-table-container" style="max-height: 800px;">
                         <table class="data-table">
                             <thead>
-                                <tr>
+                                <tr style="background-color: #a29bfe">
                                     <th width="15%">客户</th>
                                     <th width="15%">款式</th>
                                     <th width="10%">数量</th>
@@ -1845,8 +1845,8 @@
                     <div class="data-table-container" style="max-height: 800px;">
                         <table class="data-table">
                             <thead>
-                                <tr>
-                                    <th width="10%">客户名</th>
+                                <tr style="background-color: #a29bfe">
+                                    <th width="10%">客户</th>
                                     <th width="15%">订单数</th>
                                     <th width="15%">总金额</th>
                                     <th width="60%">平均订单</th>
@@ -2968,6 +2968,7 @@
 
                 saleList.innerHTML = `暂无数据`;
             }
+            renderSaleStyleList();
         }
 
         function renderSaleStyleList() {
@@ -2997,7 +2998,7 @@
                 const allItems = [];
                 filteredOrders.forEach(order => {
                     order.items.forEach(item => {
-                        const existingItem = allItems.find(i => i.style === item.style && i.customerName === order.customerName);
+                        const existingItem = allItems.find(i => i.style === item.style /*&& i.customerName === order.customerName*/);
                         if (existingItem) {
                             existingItem.quantity += 1;
                             existingItem.totalPrice += item.price;
@@ -3022,7 +3023,7 @@
                     // 客户条件
                     const customerMatch = customerFilter ? order.customerId === customerFilter : true;
                     // 商品条件：订单中至少有一个商品名称包含输入的文字（不区分大小写）
-                    const productMatch = productFilter ? order.name.toLowerCase().includes(productFilter) : true;
+                    const productMatch = productFilter ? order.style.toLowerCase().includes(productFilter) : true;
 
                     return customerMatch && productMatch;
 
@@ -3032,7 +3033,6 @@
                 filteredAllItems.forEach(item => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                    <td>${item.customerName}</td>
                     <td>${item.style}</td>
                     <td>${item.quantity}</td>
                     <td>¥${item.totalPrice.toFixed(2)}</td>
@@ -3041,7 +3041,7 @@
                         name: item.style,
                         count: item.quantity,
                         totalPrice: item.totalPrice.toFixed(2),
-                         avgPrice: (item.totalPrice / item.quantity).toFixed(2)
+                        avgPrice: (item.totalPrice / item.quantity).toFixed(2)
                      });
                     saleStyleList.appendChild(row);
                 });
@@ -3049,6 +3049,7 @@
                 categoryData = [];
                 saleStyleList.innerHTML = `暂无数据`;
             }
+            initPage();
         }
 
         // 渲染客户金额统计列表
@@ -4583,7 +4584,7 @@
                 },
                 legend: {
                     orient: 'horizontal',
-                    bottom: 10,
+                    bottom: 0,              // 距离底部距离
                     type: 'scroll',
                     pageTextStyle: {
                         color: '#666'
