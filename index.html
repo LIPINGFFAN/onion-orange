@@ -8,13 +8,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.sheetjs.com/xlsx-0.19.3/package/dist/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
 
     <!--<link href="css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/all.min.css">
     <script src="js/xlsx.full.min.js"></script>-->
     <!--<script src="js/bootstrap.bundle.min.js"></script>-->
+    <!--<script src="js/echarts.min.js"></script>-->
 
     <style>
         :root {
@@ -993,6 +993,14 @@
             touch-action: pan-y;
         }
 
+        .tab-canvas-content {
+            padding: 20px;
+            min-height: 500px;
+            position: relative;
+            overflow: hidden;
+            touch-action: pan-y;
+        }
+
         .chart-container {
             display: none;
             height: 450px;
@@ -1226,14 +1234,10 @@
                 font-size: 0.9rem;
                 min-height: 50px;
             }
-
-
         }
 
         @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
+
 
             .tab-content {
                 padding: 10px;
@@ -1247,10 +1251,6 @@
                 height: 350px;
             }
         }
-
-
-
-
     </style>
 </head>
 <body>
@@ -1676,7 +1676,7 @@
                     <div class="tab-indicator" id="tabIndicator"></div>
                 </div>
 
-                <div class="tab-content" id="tabContent">
+                <div class="tab-canvas-content" id="tabContent">
                     <!-- 饼图 -->
                     <div class="chart-container active" id="pieTab">
                         <div class="chart-header">
@@ -1822,7 +1822,7 @@
                                     <th width="15%">客户</th>
                                     <th width="15%">款式</th>
                                     <th width="10%">数量</th>
-                                    <th width="10%">金额</th>
+                                    <th width="50%">金额</th>
                                 </tr>
                             </thead>
                             <tbody id="sale-style-list">
