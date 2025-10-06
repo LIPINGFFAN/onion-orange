@@ -4583,7 +4583,7 @@
                 },
                 legend: {
                     orient: 'horizontal',
-                    bottom: 20,              // 距离底部距离
+                    bottom: 0,              // 距离底部距离
                     type: 'scroll',
                     pageTextStyle: {
                         color: '#666'
@@ -4608,7 +4608,7 @@
                             margin: 20,
                             formatter: function (params) {
                                 // 显示类别名称和百分比
-                                return `${params.name}\n${params.percent}%`;
+                                return `${params.name}(${params.percent}%)`;
                             }
                         },
                         emphasis: {
