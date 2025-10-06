@@ -1008,9 +1008,9 @@
             transition: transform 0.3s ease;
         }
 
-            .chart-container.active {
-                display: block;
-            }
+        .chart-container.active {
+            display: block;
+        }
 
         .chart-header {
             display: flex;
@@ -1042,10 +1042,10 @@
             transition: all 0.3s ease;
         }
 
-            .chart-switch-btn.active {
-                background: var(--secondary);
-                color: white;
-            }
+        .chart-switch-btn.active {
+            background: var(--secondary);
+            color: white;
+        }
 
         .chart {
             height: 400px;
@@ -1146,9 +1146,9 @@
             transition: color 0.3s ease;
         }
 
-            .close-btn:hover {
-                color: var(--primary);
-            }
+        .close-btn:hover {
+            color: var(--primary);
+        }
 
         .detail-item {
             margin-bottom: 15px;
@@ -1176,16 +1176,16 @@
             color: var(--secondary);
         }
 
-            .loading:after {
-                content: '';
-                width: 20px;
-                height: 20px;
-                margin-left: 10px;
-                border: 2px solid var(--secondary);
-                border-top: 2px solid transparent;
-                border-radius: 50%;
-                animation: spin 1s linear infinite;
-            }
+        .loading:after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            margin-left: 10px;
+            border: 2px solid var(--secondary);
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
 
         @keyframes spin {
             0% {
@@ -4573,10 +4573,9 @@
                     formatter: function (params) {
                         const data = categoryData.find(item => item.name === params.name);
                         const totalCount = categoryData.reduce((sum, item) => sum + item.count, 0);
-                        const totalPrice = categoryData.reduce((sum, item) => sum + item.totalPrice, 0);
+                        const totalPrice = categoryData.reduce((sum, item) => sum + parseFloat(item.totalPrice), 0);
                         const countPercent = (data.count / totalCount * 100).toFixed(1);
                         const pricePercent = (data.totalPrice / totalPrice * 100).toFixed(1);
-
                         return `${params.name}<br/>
                         数量: ${data.count} (${countPercent}%)<br/>
                         总价: ¥${data.totalPrice.toLocaleString()} (${pricePercent}%)`;
@@ -4584,7 +4583,7 @@
                 },
                 legend: {
                     orient: 'horizontal',
-                    bottom: 0,              // 距离底部距离
+                    bottom: 20,              // 距离底部距离
                     type: 'scroll',
                     pageTextStyle: {
                         color: '#666'
@@ -4799,7 +4798,7 @@
             radarChart.setOption(radarOption);
 
             // 添加点击事件
-            addChartClickEvents();
+            //addChartClickEvents();
         }
 
         // 添加图表点击事件
