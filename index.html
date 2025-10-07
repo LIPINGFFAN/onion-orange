@@ -2218,7 +2218,7 @@
                     // 如果是开单页面，聚焦扫描框
                     if (sectionId === 'order-section') {
                         // 自动聚焦到扫描输入框
-                        //document.getElementById('product-scan').focus();
+                        document.getElementById('product-scan').focus();
                     }
                 });
             });
@@ -4529,7 +4529,7 @@
         }
 
         // 初始化数据
-        
+        let observers = [];
         let colors = [];
         let pieChartMode = 'totalPrice'; // 默认显示总价
         let currentTab = 'pie'; // 当前选中的选项卡
@@ -4539,25 +4539,40 @@
 
         // 初始化图表
         function initCharts() {
-            // 初始化所有图表，但只显示当前选项卡的图表
+            // 在重新初始化前，断开所有之前的观察者
+            observers.forEach(observer => {
+                observer.disconnect();
+            });
+            observers = [];
+
             pieChart = echarts.init(document.getElementById('pieChart'));
             barChart = echarts.init(document.getElementById('barChart'));
             radarChart = echarts.init(document.getElementById('radarChart'));
 
-            // 更新图表
             updateCharts();
 
-            // 窗口大小改变时重绘当前显示的图表
-            window.addEventListener('resize', function () {
-                if (currentTab === 'pie') {
-                    pieChart.resize();
-                } else if (currentTab === 'bar') {
-                    barChart.resize();
-                } else if (currentTab === 'radar') {
-                    radarChart.resize();
-                }
+            // 使用ResizeObserver监听每个图表容器的尺寸变化
+            const charts = [pieChart, barChart, radarChart];
+
+            charts.forEach(chart => {
+                const observer = new ResizeObserver(() => {
+                    chart.resize();
+                });
+                observer.observe(chart.getDom());
+                observers.push(observer);
             });
         }
+
+        // 窗口resize事件监听，只调整当前活动图表
+        window.addEventListener('resize', function () {
+            if (currentTab === 'pie') {
+                pieChart && pieChart.resize();
+            } else if (currentTab === 'bar') {
+                barChart && barChart.resize();
+            } else if (currentTab === 'radar') {
+                radarChart && radarChart.resize();
+            }
+        });
 
         // 更新图表
         function updateCharts() {
