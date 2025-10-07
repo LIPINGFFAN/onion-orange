@@ -239,33 +239,33 @@
 
         /* 导入预览表格 */
         .import-preview {
-            max-height: 300px;
+            max-height: 350px;
             overflow-y: auto;
             margin: 15px 0;
             border: 1px solid #eee;
             border-radius: 12px;
         }
 
-            .import-preview table {
-                width: 100%;
-                border-collapse: collapse;
-            }
+        .import-preview table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-            .import-preview th, .import-preview td {
-                padding: 10px;
-                text-align: left;
-                border-bottom: 1px solid #eee;
-            }
+        .import-preview th, .import-preview td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
 
-            .import-preview th {
-                background-color: #f8f9fa;
-                position: sticky;
-                top: 0;
-            }
+        .import-preview th {
+            background-color: #f8f9fa;
+            position: sticky;
+            top: 0;
+        }
 
-            .import-preview tr:nth-child(even) {
-                background-color: #f8f9fa;
-            }
+        .import-preview tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
 
         /* 文件路径显示 */
         .file-path {
@@ -1103,12 +1103,12 @@
             transition: all 0.3s ease;
         }
 
-            .detail-modal.active {
-                opacity: 1;
-                visibility: visible;
-            }
+        .detail-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
 
-        .modal-content {
+        /*.modal-content {
             background: white;
             border-radius: 20px;
             padding: 30px;
@@ -1119,7 +1119,7 @@
             transition: transform 0.3s ease;
             max-height: 90vh;
             overflow-y: auto;
-        }
+        }*/
 
         .detail-modal.active .modal-content {
             transform: translateY(0);
@@ -1787,16 +1787,16 @@
                     <i class="fas fa-table"></i>销售商品数据详情
                 </div>
                 <div class="card-body">
-                    <div class="data-table-container" style="max-height: 800px;">
-                        <table class="data-table">
+                    <div class="import-preview">
+                        <table class="table table-striped">
                             <thead>
-                                <tr style="background-color: #a29bfe">
-                                    <th width="15%">客户</th>
-                                    <th width="15%">商品名称</th>
-                                    <th width="10%">数量</th>
-                                    <th width="10%">金额</th>
-                                    <th width="25%">款式</th>
-                                    <th width="25%">类型</th>
+                                <tr>
+                                    <th width="17%">客户</th>
+                                    <th width="16%">商品</th>
+                                    <th width="16%">数量</th>
+                                    <th width="16%">金额</th>
+                                    <th width="16%">款式</th>
+                                    <th width="16%">类型</th>
                                 </tr>
                             </thead>
                             <tbody id="sale-list">
@@ -1815,14 +1815,13 @@
                     <i class="fas fa-table"></i>销售类别数据详情
                 </div>
                 <div class="card-body">
-                    <div class="data-table-container" style="max-height: 800px;">
-                        <table class="data-table">
+                    <div class="import-preview">
+                        <table class="table table-striped">
                             <thead>
-                                <tr style="background-color: #a29bfe">
-                                    <th width="15%">客户</th>
-                                    <th width="15%">款式</th>
-                                    <th width="10%">数量</th>
-                                    <th width="50%">金额</th>
+                                <tr>
+                                    <th width="34%">款式</th>
+                                    <th width="33%">数量</th>
+                                    <th width="33%">金额</th>
                                 </tr>
                             </thead>
                             <tbody id="sale-style-list">
@@ -1842,14 +1841,14 @@
                     <i class="fas fa-chart-pie"></i>客户商品统计
                 </div>
                 <div class="card-body">
-                    <div class="data-table-container" style="max-height: 800px;">
-                        <table class="data-table">
+                    <div class="import-preview" style="max-height: 400px;">
+                        <table class="table table-striped">
                             <thead>
                                 <tr style="background-color: #a29bfe">
-                                    <th width="10%">客户</th>
-                                    <th width="15%">订单数</th>
-                                    <th width="15%">总金额</th>
-                                    <th width="60%">平均订单</th>
+                                    <th width="25%">客户</th>
+                                    <th width="25%">订单数</th>
+                                    <th width="25%">总金额</th>
+                                    <th width="25%">平均订单</th>
                                 </tr>
                             </thead>
                             <tbody id="sale-customer-list">
@@ -4909,50 +4908,7 @@
                 });
             });
 
-            // 滑动切换功能
-            const tabContent = document.getElementById('tabContent');
-            let startX = 0;
-            let currentX = 0;
-            let isSwiping = false;
-
-            tabContent.addEventListener('touchstart', (e) => {
-                startX = e.touches[0].clientX;
-                currentX = startX;
-                isSwiping = true;
-            });
-
-            tabContent.addEventListener('touchmove', (e) => {
-                if (!isSwiping) return;
-                currentX = e.touches[0].clientX;
-            });
-
-            tabContent.addEventListener('touchend', () => {
-                if (!isSwiping) return;
-
-                const diffX = currentX - startX;
-                const threshold = 50; // 滑动阈值
-
-                if (Math.abs(diffX) > threshold) {
-                    const tabs = ['pie', 'bar', 'radar'];
-                    const currentIndex = tabs.indexOf(currentTab);
-
-                    if (diffX > 0 && currentIndex > 0) {
-                        // 向右滑动，切换到前一个选项卡
-                        switchTab(tabs[currentIndex - 1]);
-                    } else if (diffX < 0 && currentIndex < tabs.length - 1) {
-                        // 向左滑动，切换到后一个选项卡
-                        switchTab(tabs[currentIndex + 1]);
-                    }
-                }
-
-                isSwiping = false;
-            });
-
-            // 初始化指示器位置
-            updateIndicator();
-
-            // 窗口大小改变时更新指示器位置
-            window.addEventListener('resize', updateIndicator);
+            
         }
 
         // 切换饼图显示模式
