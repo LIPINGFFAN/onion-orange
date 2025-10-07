@@ -995,7 +995,7 @@
 
         .tab-canvas-content {
             padding: 20px;
-            min-height: 500px;
+            min-height: 410px;
             position: relative;
             overflow: hidden;
             touch-action: pan-y;
@@ -1016,13 +1016,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            /*margin-bottom: 15px;*/
         }
 
         .chart-title {
             font-size: 1.3rem;
             color: var(--secondary);
             font-weight: 600;
+            padding-bottom:10px;
         }
 
         .chart-switcher {
@@ -1680,7 +1681,7 @@
                     <!-- 饼图 -->
                     <div class="chart-container active" id="pieTab">
                         <div class="chart-header">
-                            <h2 class="chart-title">商品类别数据占比</h2>
+                            <!--<h2 class="chart-title">商品类别数据占比</h2>-->
                             <div class="chart-switcher">
                                 <button class="chart-switch-btn active" id="pieSwitchPrice">总价</button>
                                 <button class="chart-switch-btn" id="pieSwitchCount">数量</button>
@@ -4597,7 +4598,7 @@
                 },
                 legend: {
                     orient: 'horizontal',
-                    bottom: 0,              // 距离底部距离
+                    bottom: -5,              // 距离底部距离
                     type: 'scroll',
                     pageTextStyle: {
                         color: '#666'
@@ -4674,7 +4675,7 @@
                     left: '3%',
                     right: '4%',
                     bottom: categoryData.length > 8 ? '20%' : '15%',
-                    top: '15%',
+                    top: '25%',
                     containLabel: true
                 },
                 xAxis: {
