@@ -1792,11 +1792,11 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th width="20%">客户</th>
-                                    <th width="20%">商品</th>
-                                    <th width="20%">款式</th>
-                                    <th width="20%">数量</th>
-                                    <th width="20%">金额</th>
+                                    <th width="25%">客户</th>
+                                    <th width="25%">商品</th>
+                                    <!--<th width="20%">款式</th>-->
+                                    <th width="25%">数量</th>
+                                    <th width="25%">金额</th>
                                 </tr>
                             </thead>
                             <tbody id="sale-list">
@@ -2956,7 +2956,6 @@
                     row.innerHTML = `
                         <td>${item.customerName}</td>
                         <td>${item.name}</td>
-                        <td>${item.style}</td>
                         <td>${item.quantity}</td>
                         <td>¥${item.totalPrice.toFixed(2)}</td>
                         
