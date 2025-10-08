@@ -3871,7 +3871,8 @@
                 '编号': product.code,
                 '名称': product.name,
                 '款式': product.style,
-                '客户': product.customer || '自营',
+                '合作方ID': product.customerId || '0',
+                '合作方': product.customer || '自营',
                 '类型': product.type,
                 '价格': product.price,
                 '库存': product.stock
@@ -3976,7 +3977,8 @@
                                 code: item['编号'] || '',
                                 name: item['名称'] || '',
                                 style: item['款式'] || '',
-                                customer: item['客户'] || '自营',
+                                customerId: item['合作方ID'] || '0',
+                                customer: item['合作方'] || '自营',
                                 type: item['类型'] || '普通',
                                 price: parseFloat(item['价格'] || 0),
                                 stock: parseInt(item['库存'] || 0)
