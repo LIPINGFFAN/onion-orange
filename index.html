@@ -2681,7 +2681,7 @@
                             <h6 class="mb-1 list-overtext" style="max-width:${window.innerWidth - 212}px;">${customer.name}</h6>
                             <small class="text-muted">编号: ${customer.id}</small>
                             <div class="mt-1">
-                                <span class="badge ${getTypeClass(customer.type)} ">${customer.type}</span>
+                                <span class="badge ${getTypeClass(customer.type)} ">${customer.type || `待设置`}</span>
                                 <span class="badge bg-success">消费: ¥${customer.totalConsumption ? customer.totalConsumption.toFixed(2) : '0.00'}</span>
                             </div>
                         </div>
@@ -2749,7 +2749,7 @@
                             <h6 class="mb-1">${customer.name}</h6>
                             <small class="text-muted">编号: ${customer.code}</small>
                             <div class="mt-1">
-                                <span class="badge ${getTypeClass(customer.type)} ">${customer.type}</span>
+                                <span class="badge ${getTypeClass(customer.type)} ">${customer.type || `待设置`}</span>
                                 <span class="badge bg-success">消费: ¥${customer.totalConsumption ? customer.totalConsumption.toFixed(2) : '0.00'}</span>
                             </div>
                         </div>
@@ -3470,7 +3470,7 @@
             document.getElementById('customer-code').value = customer.code;
             document.getElementById('customer-name').value = customer.name;
             document.getElementById('customer-type').value = customer.type;
-            document.getElementById('customer-totalConsumption').value = customer.totalConsumption;
+            document.getElementById('customer-totalConsumption').value = customer.totalConsumption.toFixed(2);
 
             const modal = new bootstrap.Modal(document.getElementById('customerModal'));
             modal.show();
