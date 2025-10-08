@@ -246,26 +246,26 @@
             border-radius: 12px;
         }
 
-        .import-preview table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+            .import-preview table {
+                width: 100%;
+                border-collapse: collapse;
+            }
 
-        .import-preview th, .import-preview td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
+            .import-preview th, .import-preview td {
+                padding: 10px;
+                text-align: left;
+                border-bottom: 1px solid #eee;
+            }
 
-        .import-preview th {
-            background-color: #f8f9fa;
-            position: sticky;
-            top: 0;
-        }
+            .import-preview th {
+                background-color: #f8f9fa;
+                position: sticky;
+                top: 0;
+            }
 
-        .import-preview tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
+            .import-preview tr:nth-child(even) {
+                background-color: #f8f9fa;
+            }
 
         /* 文件路径显示 */
         .file-path {
@@ -1008,9 +1008,9 @@
             transition: transform 0.3s ease;
         }
 
-        .chart-container.active {
-            display: block;
-        }
+            .chart-container.active {
+                display: block;
+            }
 
         .chart-header {
             display: flex;
@@ -1023,7 +1023,7 @@
             font-size: 1.3rem;
             color: var(--secondary);
             font-weight: 600;
-            padding-bottom:10px;
+            padding-bottom: 10px;
         }
 
         .chart-switcher {
@@ -1043,10 +1043,10 @@
             transition: all 0.3s ease;
         }
 
-        .chart-switch-btn.active {
-            background: var(--secondary);
-            color: white;
-        }
+            .chart-switch-btn.active {
+                background: var(--secondary);
+                color: white;
+            }
 
         .chart {
             height: 400px;
@@ -1104,12 +1104,12 @@
             transition: all 0.3s ease;
         }
 
-        .detail-modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
+            .detail-modal.active {
+                opacity: 1;
+                visibility: visible;
+            }
 
-        /*.modal-content {
+                /*.modal-content {
             background: white;
             border-radius: 20px;
             padding: 30px;
@@ -1122,9 +1122,9 @@
             overflow-y: auto;
         }*/
 
-        .detail-modal.active .modal-content {
-            transform: translateY(0);
-        }
+                .detail-modal.active .modal-content {
+                    transform: translateY(0);
+                }
 
         .modal-header {
             display: flex;
@@ -1147,9 +1147,9 @@
             transition: color 0.3s ease;
         }
 
-        .close-btn:hover {
-            color: var(--primary);
-        }
+            .close-btn:hover {
+                color: var(--primary);
+            }
 
         .detail-item {
             margin-bottom: 15px;
@@ -1177,16 +1177,16 @@
             color: var(--secondary);
         }
 
-        .loading:after {
-            content: '';
-            width: 20px;
-            height: 20px;
-            margin-left: 10px;
-            border: 2px solid var(--secondary);
-            border-top: 2px solid transparent;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
+            .loading:after {
+                content: '';
+                width: 20px;
+                height: 20px;
+                margin-left: 10px;
+                border: 2px solid var(--secondary);
+                border-top: 2px solid transparent;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
 
         @keyframes spin {
             0% {
@@ -1316,7 +1316,7 @@
             <!-- 客户选择区域 -->
             <div class="customer-selector">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="mb-0">选择客户</h5>
+                    <h5 class="mb-0">选择销售客户</h5>
                     <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#customerModal">
                         <i class="fas fa-plus me-1"></i>添加客户
                     </button>
@@ -2008,6 +2008,12 @@
                             <input type="text" class="form-control" id="product-style">
                         </div>
                         <div class="mb-3">
+                            <label for="product-customer" class="form-label">所属客户</label>
+                            <select class="form-select" id="product-customer">
+                                <option value="自营">--自营--</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
                             <label for="product-type" class="form-label">类型</label>
                             <select class="form-select" id="product-type">
                                 <option value="普通">普通</option>
@@ -2048,6 +2054,13 @@
                         <div class="mb-3">
                             <label for="customer-name" class="form-label">客户名称</label>
                             <input type="text" class="form-control" id="customer-name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="customer-type" class="form-label">客户类型</label>
+                            <select class="form-select" id="customer-type">
+                                <option value="销售方">销售方</option>
+                                <option value="合作方">合作方</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="customer-totalConsumption" class="form-label">结算金额</label>
@@ -2412,6 +2425,11 @@
                 });
             });
 
+            document.getElementById('customerModal').addEventListener('hidden.bs.modal', formClear);
+            document.getElementById('productModal').addEventListener('hidden.bs.modal', formClear);
+            document.getElementById('orderDetailModal').addEventListener('hidden.bs.modal', formClear);
+
+
             // 初始化显示
             renderProducts();
             renderCurrentOrder();
@@ -2500,15 +2518,16 @@
 
         // 渲染客户选项
         function renderCustomerOptions() {
+            //首页的客户
             const customerSelect = document.getElementById('customer-select');
             customerSelect.innerHTML = '<option value="">-- 请选择客户 --</option>';
-
-            customers.forEach(customer => {
+            customers.filter(t => t.type === "销售方").forEach(customer => {
                 const option = document.createElement('option');
                 option.value = customer.id;
                 option.textContent = `${customer.name}`;
                 customerSelect.appendChild(option);
             });
+            renderProductCustomerOptions();
         }
 
         function renderHistoryCustomerOptions() {
@@ -2516,7 +2535,7 @@
             // 先清空现有的选项，但保留“全部客户”
             customerSelect.innerHTML = '<option value="">全部客户</option>';
 
-            customers.forEach(customer => {
+            customers.filter(t => t.type === "销售方").forEach(customer => {
                 const option = document.createElement('option');
                 option.value = customer.id;
                 option.textContent = `${customer.name}`;
@@ -2529,7 +2548,18 @@
             // 先清空现有的选项，但保留“全部客户”
             customerSelect.innerHTML = '<option value="">全部客户</option>';
 
-            customers.forEach(customer => {
+            customers.filter(t => t.type === "销售方").forEach(customer => {
+                const option = document.createElement('option');
+                option.value = customer.id;
+                option.textContent = `${customer.name}`;
+                customerSelect.appendChild(option);
+            });
+        }
+
+        function renderProductCustomerOptions() {
+            const customerSelect = document.getElementById('product-customer');
+            customerSelect.innerHTML = '<option value="自营">-- 自营 --</option>';
+            customers.filter(t => t.type === "合作方").forEach(customer => {
                 const option = document.createElement('option');
                 option.value = customer.id;
                 option.textContent = `${customer.name}`;
@@ -2651,7 +2681,8 @@
                             <h6 class="mb-1 list-overtext" style="max-width:${window.innerWidth - 212}px;">${customer.name}</h6>
                             <small class="text-muted">编号: ${customer.id}</small>
                             <div class="mt-1">
-                                <span class="badge bg-success">累计消费: ¥${customer.totalConsumption ? customer.totalConsumption.toFixed(2) : '0.00'}</span>
+                                <span class="badge ${getTypeClass(customer.type)} ">${customer.type}</span>
+                                <span class="badge bg-success">消费: ¥${customer.totalConsumption ? customer.totalConsumption.toFixed(2) : '0.00'}</span>
                             </div>
                         </div>
                         <div>
@@ -2693,7 +2724,8 @@
 
             const filteredCustomers = customers.filter(c =>
                 c.code.toLowerCase().includes(keyword) ||
-                c.name.toLowerCase().includes(keyword)
+                c.name.toLowerCase().includes(keyword)||
+                c.type.toLowerCase().includes(keyword)
             );
 
             const customersList = document.getElementById('customers-list');
@@ -2717,7 +2749,8 @@
                             <h6 class="mb-1">${customer.name}</h6>
                             <small class="text-muted">编号: ${customer.code}</small>
                             <div class="mt-1">
-                                <span class="badge bg-success">累计消费: ¥${customer.totalConsumption ? customer.totalConsumption.toFixed(2) : '0.00'}</span>
+                                <span class="badge ${getTypeClass(customer.type)} ">${customer.type}</span>
+                                <span class="badge bg-success">消费: ¥${customer.totalConsumption ? customer.totalConsumption.toFixed(2) : '0.00'}</span>
                             </div>
                         </div>
                         <div>
@@ -3166,13 +3199,13 @@
                 codeInput.value = '';
                 return;
             }
-
             // 添加到当前订单
             currentOrder.items.push({
                 id: product.id,
                 code: product.code,
                 name: product.name,
                 style: product.style,
+                productCustomer: product.customer,
                 type: product.type,
                 price: product.price
             });
@@ -3308,6 +3341,7 @@
             const name = document.getElementById('product-name').value;
             const style = document.getElementById('product-style').value;
             const type = document.getElementById('product-type').value;
+            const customer = customers.find(t => t.id === document.getElementById('product-customer').value).name;
             const price = parseFloat(document.getElementById('product-price').value);
             const stock = parseInt(document.getElementById('product-stock').value);
 
@@ -3322,7 +3356,7 @@
                 if (index !== -1) {
                     products[index] = {
                         ...products[index],
-                        code, name, style, type, price, stock
+                        code, name, style, customer, type, price, stock
                     };
                     showAlert('商品已更新', 'success');
                 }
@@ -3330,7 +3364,7 @@
                 // 添加新商品
                 const newProduct = {
                     id: 'prod-' + Date.now(),
-                    code, name, style, type, price, stock,
+                    code, name, style, customer, type, price, stock,
                     addTime: new Date()
                 };
                 products.push(newProduct);
@@ -3357,6 +3391,7 @@
             const customerId = document.getElementById('customer-id').value;
             const code = document.getElementById('customer-code').value;
             const name = document.getElementById('customer-name').value;
+            const type = document.getElementById('customer-type').value;
             const totalConsumption = parseFloat(document.getElementById('customer-totalConsumption').value);
 
             if (!name) {
@@ -3370,7 +3405,7 @@
                 if (index !== -1) {
                     customers[index] = {
                         ...customers[index],
-                        code, name, totalConsumption
+                        code, name, type, totalConsumption
                     };
                     showAlert('客户已更新', 'success');
                 }
@@ -3378,8 +3413,10 @@
                 // 添加新客户
                 const newCustomer = {
                     id: generateCustomerId(),
-                    code, name,
+                    name, name,
+                    type, type,
                     totalConsumption: totalConsumption || 0,
+                    code:code,
                     addTime: new Date()
                 };
                 customers.push(newCustomer);
@@ -3392,7 +3429,7 @@
             // 更新显示
             renderCustomers();
             renderCustomerOptions();
-            renderHistoryCustomerOptions
+            renderHistoryCustomerOptions();
             renderReportCustomerOptions();
 
             // 关闭模态框
@@ -3432,6 +3469,7 @@
             document.getElementById('customer-id').value = customer.id;
             document.getElementById('customer-code').value = customer.code;
             document.getElementById('customer-name').value = customer.name;
+            document.getElementById('customer-type').value = customer.type;
             document.getElementById('customer-totalConsumption').value = customer.totalConsumption;
 
             const modal = new bootstrap.Modal(document.getElementById('customerModal'));
@@ -3484,7 +3522,8 @@
                 p.code.toLowerCase().includes(keyword) ||
                 p.name.toLowerCase().includes(keyword) ||
                 p.style.toLowerCase().includes(keyword) ||
-                p.type.toLowerCase().includes(keyword)
+                p.type.toLowerCase().includes(keyword) ||
+                p.customer.toLowerCase().includes(keyword)
             );
 
             const productsList = document.getElementById('products-list');
@@ -3810,6 +3849,7 @@
                 '编号': product.code,
                 '名称': product.name,
                 '款式': product.style,
+                '客户': product.customer || '自营',
                 '类型': product.type,
                 '价格': product.price,
                 '库存': product.stock
@@ -3839,6 +3879,7 @@
                 '编号': customer.id,
                 '名称': customer.name,
                 '累计消费': customer.totalConsumption || 0,
+                '类型': customer.type,
                 '备注': customer.code,
             }));
 
@@ -3871,6 +3912,7 @@
                     '商品编号': item.code,
                     '商品名称': item.name,
                     '商品款式': item.style,
+                    '商品合作方': item.productCustomer || '自营',
                     '商品类型': item.type,
                     '商品单价': item.price
                 }))
@@ -3912,6 +3954,7 @@
                                 code: item['编号'] || '',
                                 name: item['名称'] || '',
                                 style: item['款式'] || '',
+                                customer: item['客户'] || '自营',
                                 type: item['类型'] || '普通',
                                 price: parseFloat(item['价格'] || 0),
                                 stock: parseInt(item['库存'] || 0)
@@ -3938,6 +3981,7 @@
                                 code: item['商品编号'] || '',
                                 name: item['商品名称'] || '',
                                 style: item['商品款式'] || '',
+                                productCustomer: item['商品合作方'] || '自营',
                                 type: item['商品类型'] || '普通',
                                 price: parseFloat(item['商品单价'] || 0)
                             });
@@ -3950,6 +3994,7 @@
                             return {
                                 id: item['编号'] || '',
                                 name: item['名称'] || '',
+                                type: item['类型'] || '自营',
                                 totalConsumption: parseFloat(item['累计消费'] || 0),
                                 code: item['备注'] || ''
                             };
@@ -3985,7 +4030,7 @@
 
             // 根据导入类型显示不同的预览
             if (importType === 'products') {
-                previewHead.innerHTML = `<tr><th>编号</th><th>名称</th><th>款式</th><th>类型</th><th>价格</th><th>库存</th></tr>`;
+                previewHead.innerHTML = `<tr><th>编号</th><th>名称</th><th>款式</th><th>客户</th><th>类型</th><th>价格</th><th>库存</th></tr>`;
                 // 只显示前10条记录作为预览
                 const previewItems = dataToImport.slice(0, 10);
 
@@ -3995,6 +4040,7 @@
                             <td>${item.code}</td>
                             <td>${item.name}</td>
                             <td>${item.style}</td>
+                            <td>${item.customer}</td>
                             <td>${item.type}</td>
                             <td>¥${item.price.toFixed(2)}</td>
                             <td>${item.stock.toFixed(2)}</td>
@@ -4008,7 +4054,7 @@
                     previewBody.appendChild(tr);
                 }
             } else if (importType === 'orders') {
-                previewHead.innerHTML = `<tr><th>编号</th><th>名称</th><th>款式</th><th>类型</th><th>价格</th></tr>`;
+                previewHead.innerHTML = `<tr><th>编号</th><th>名称</th><th>款式</th><th>合作方</th><th>类型</th><th>价格</th></tr>`;
                 // 显示订单预览
                 const previewItems = dataToImport.slice(0, 5);
 
@@ -4029,6 +4075,7 @@
                                 <td>${item.code}</td>
                                 <td>${item.name}</td>
                                 <td>${item.style}</td>
+                                <td>${item.productCustomer}</td>
                                 <td>${item.type}</td>
                                 <td>¥${item.price.toFixed(2)}</td>
                                 <td colspan="2"></td>
@@ -4043,7 +4090,7 @@
                     previewBody.appendChild(tr);
                 }
             } else if (importType === 'customers') {
-                previewHead.innerHTML = `<tr><th>编号</th><th>名称</th><th>金额</th><th>备注</th></tr>`;
+                previewHead.innerHTML = `<tr><th>编号</th><th>名称</th><th>类型</th><th>金额</th><th>备注</th></tr>`;
                 // 显示客户预览
                 const previewItems = dataToImport.slice(0, 10);
 
@@ -4052,6 +4099,7 @@
                     tr.innerHTML = `
                             <td>${customer.id}</td>
                             <td>${customer.name}</td>
+                            <td>${customer.type}</td>
                             <td>¥${customer.totalConsumption.toFixed(2)}</td>
                             <td>${customer.code}</td>
                         `;
@@ -4090,12 +4138,7 @@
                         // 如果存在且选择覆盖
                         if (replaceExisting) {
                             products[existingIndex] = {
-                                ...products[existingIndex],
-                                name: importedProduct.name,
-                                style: importedProduct.style,
-                                type: importedProduct.type,
-                                price: importedProduct.price,
-                                stock: importedProduct.stock
+                                ...products[existingIndex]
                             };
                             updatedCount++;
                         }
@@ -4173,6 +4216,7 @@
                             customers[existingIndex] = {
                                 ...customers[existingIndex],
                                 name: importedCustomer.name,
+                                type: importedCustomer.type,
                                 code: importedCustomer.code,
                                 totalConsumption: importedCustomer.totalConsumption
                             };
@@ -4342,13 +4386,13 @@
         }
 
         function getTypeClass(type) {
-            if (type === "特价") {
+            if (type === "特价" || type === "销售方") {
                 return "tag-sale";
             }
             else if (type === "新品") {
                 return "tag-new";
             }
-            else if (type === "热门") {
+            else if (type === "热门" || type === "合作方") {
                 return "tag-hot";
             }
             else {
@@ -4920,6 +4964,16 @@
 
             // 初始化选项卡
             initTabs();
+        }
+
+        function formClear() {
+            // 重置表单
+            const form = this.querySelector('form');
+            if (form) form.reset();
+            const hiddenInputs = this.querySelectorAll('input[type="hidden"]');
+            hiddenInputs.forEach(input => {
+                input.value = '';
+            });
         }
 
 
