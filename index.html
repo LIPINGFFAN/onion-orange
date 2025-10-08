@@ -2950,6 +2950,7 @@
 
                 });
 
+                filteredAllItems.sort((a, b) => b.totalPrice - a.totalPrice);
                 filteredAllItems.forEach(item => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
@@ -3029,6 +3030,7 @@
                 });
 
                 categoryData = [];
+                filteredAllItems.sort((a, b) => b.totalPrice - a.totalPrice);
                 filteredAllItems.forEach(item => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
@@ -3082,6 +3084,7 @@
                     });
                 });
 
+                allItems.sort((a, b) => b.totalPrice - a.totalPrice);
                 allItems.forEach(item => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
