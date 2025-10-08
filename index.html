@@ -2010,7 +2010,7 @@
                         <div class="mb-3">
                             <label for="product-customer" class="form-label">所属客户</label>
                             <select class="form-select" id="product-customer">
-                                <option value="自营">--自营--</option>
+                                <option value="0">--自营--</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -2558,7 +2558,7 @@
 
         function renderProductCustomerOptions() {
             const customerSelect = document.getElementById('product-customer');
-            customerSelect.innerHTML = '<option value="自营">-- 自营 --</option>';
+            customerSelect.innerHTML = '<option value="0">-- 自营 --</option>';
             customers.filter(t => t.type === "合作方").forEach(customer => {
                 const option = document.createElement('option');
                 option.value = customer.id;
@@ -3277,6 +3277,17 @@
                     products[productsIndex].stock = products[productsIndex].stock - 1;
                 }
 
+                //更新合作方的金额
+                const customerIndex = customers.findIndex(c => c.name === item.productCustomer);
+                if (customerIndex>-1) {
+                    if (!customers[customerIndex].totalConsumption) {
+                        customers[customerIndex].totalConsumption = 0;
+                    }
+                    customers[customerIndex].totalConsumption += item.price;
+                    localStorage.setItem('orange-customers', JSON.stringify(customers));
+                }
+
+
             });
             localStorage.setItem('orange-products', JSON.stringify(products));
             // 更新商品显示
@@ -3341,6 +3352,7 @@
             const name = document.getElementById('product-name').value;
             const style = document.getElementById('product-style').value;
             const type = document.getElementById('product-type').value;
+            const customerId = document.getElementById('product-customer').value;
             const customer = customers.find(t => t.id === document.getElementById('product-customer').value).name;
             const price = parseFloat(document.getElementById('product-price').value);
             const stock = parseInt(document.getElementById('product-stock').value);
@@ -3356,7 +3368,7 @@
                 if (index !== -1) {
                     products[index] = {
                         ...products[index],
-                        code, name, style, customer, type, price, stock
+                        code, name, style, customerId, customer, type, price, stock
                     };
                     showAlert('商品已更新', 'success');
                 }
@@ -3364,7 +3376,7 @@
                 // 添加新商品
                 const newProduct = {
                     id: 'prod-' + Date.now(),
-                    code, name, style, customer, type, price, stock,
+                    code, name, style, customerId, customer, type, price, stock,
                     addTime: new Date()
                 };
                 products.push(newProduct);
@@ -3450,6 +3462,7 @@
             document.getElementById('product-code').value = product.code;
             document.getElementById('product-name').value = product.name;
             document.getElementById('product-style').value = product.style;
+            document.getElementById('product-customer').value = product.customerId;
             document.getElementById('product-type').value = product.type;
             document.getElementById('product-price').value = product.price;
             document.getElementById('product-stock').value = product.stock;
@@ -3654,6 +3667,15 @@
                             }
                         }
 
+
+                        const customerIndex = customers.findIndex(c => c.name === item.productCustomer);
+                        if (customerIndex !== -1 && customers[customerIndex].totalConsumption) {
+                            customers[customerIndex].totalConsumption -= item.price;
+                            if (customers[customerIndex].totalConsumption < 0) {
+                                customers[customerIndex].totalConsumption = 0;
+                            }
+                            localStorage.setItem('orange-customers', JSON.stringify(customers));
+                        }
                     });
 
                     localStorage.setItem('orange-products', JSON.stringify(products));
