@@ -3353,7 +3353,7 @@
             const style = document.getElementById('product-style').value;
             const type = document.getElementById('product-type').value;
             const customerId = document.getElementById('product-customer').value;
-            const customer = customers.find(t => t.id === document.getElementById('product-customer').value).name;
+            const customer = document.getElementById('product-customer').textContent;
             const price = parseFloat(document.getElementById('product-price').value);
             const stock = parseInt(document.getElementById('product-stock').value);
 
