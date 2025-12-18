@@ -3034,9 +3034,9 @@
                 // 客户条件
                 const customerMatch = customerFilter ? order.customerId === customerFilter : true;
                 // 商品条件：订单中至少有一个商品名称包含输入的文字（不区分大小写）
-                const productMatch = productFilter ? order.style.toLowerCase().includes(productFilter) : true;
+                //const productMatch = productFilter ? order.style.toLowerCase().includes(productFilter) : true;
 
-                return customerMatch && productMatch && inDateRangeOrder;
+                return customerMatch && inDateRangeOrder;
             });
 
             const saleStyleList = document.getElementById('sale-style-list');
