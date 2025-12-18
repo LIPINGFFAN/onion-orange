@@ -2242,6 +2242,7 @@
             document.getElementById('product-search').addEventListener('keypress', function (e) {
                 if (e.key === 'Enter') searchProducts();
             });
+            document.getElementById('product-search').addEventListener('input', debouncedSearch);
 
             // 客户搜索
             document.getElementById('customer-search-btn').addEventListener('click', searchCustomers);
@@ -5062,6 +5063,24 @@
 
             barcodeModal.show();
         }
+
+        // 防抖函数
+        function debounce(func, wait) {
+            let timeout;
+            return function (...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    func.apply(this, args);
+                }, wait);
+            };
+        }
+
+        // 防抖版本，300ms延迟
+        const debouncedSearch = debounce((e) => {
+            searchProducts();
+        }, 300);
+
+
     </script>
 </body>
 </html>
