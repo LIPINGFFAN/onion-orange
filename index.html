@@ -2204,6 +2204,7 @@
             id: generateOrderId(),
             items: [],
             total: 0,
+            num: 0,
             date: new Date(),
             customerId: '',
             customerName: ''
@@ -2842,11 +2843,11 @@
                 itemElement.innerHTML = `
                                     <div>
                                         <h6 class="mb-0 list-overtext-currentorder" style="font-size: ${index == currentOrder.items.length - 1 ? 1.2 : 1}rem;font-weight: 700 !important;max-width:${window.innerWidth - 282}px;">${item.name}</h6>
-                                        <small class="text-muted">${item.style}</small>
+                                        <small class="text-muted">${item.style}</small><small class="text-muted">×${item.quantity || 1}</small>
                                     </div>
                                     <div class="d-flex align-items-center">
                                             <span class="me-3 fw-bold price-editable tag-currentorder-price2" data-index="${index}" data-original-price="${item.price}">
-                                                ¥${item.price.toFixed(2)}
+                                                ¥${(item.price * (item.quantity || 1)).toFixed(2)}
                                             </span>
                                         <button class="btn btn-sm btn-outline-danger remove-item" data-index="${index}">
                                             <i class="fas fa-times"></i>
@@ -2857,11 +2858,11 @@
             }
 
             // 计算并显示总价
-            currentOrder.total = currentOrder.items.reduce((total, item) => total + item.price, 0);
+            currentOrder.total = currentOrder.items.reduce((total, item) => total + (item.price * (item.quantity || 1)), 0);
             document.getElementById('order-total').textContent = `¥${currentOrder.total.toFixed(2)}`;
 
             // 计算并显示总商品数量
-            currentOrder.num = currentOrder.items.length;
+            currentOrder.num = currentOrder.items.reduce((num, item) => num + (item.quantity || 1), 0);
             document.getElementById('order-num').textContent = `总计：${currentOrder.num} 件商品`;
 
             // 添加删除单个商品事件
@@ -2911,7 +2912,7 @@
                                             <h6 class="mb-1 list-overtext variation-2" style="max-width:${window.innerWidth - 212}px;">${content}</h6>
                                             <small class="text-muted">${orderDate}</small>
                                             <div class="mt-1">
-                                                <span class="badge bg-primary view-order" data-id="${order.id}" style="cursor: pointer;">${order.items.length} 件商品</span>
+                                                <span class="badge bg-primary view-order" data-id="${order.id}" style="cursor: pointer;">${order.num || (order.items.reduce((num, item) => num + (item.quantity || 1), 0))} 件商品</span>
                                                 <span class="badge bg-success">¥${order.total.toFixed(2)}</span>
                                             </div>
                                         </div>
@@ -2981,8 +2982,8 @@
                     order.items.forEach(item => {
                         const existingItem = allItems.find(i => i.code === item.code && i.customerName === order.customerName);
                         if (existingItem) {
-                            existingItem.quantity += 1;
-                            existingItem.totalPrice += item.price;
+                            existingItem.quantity += (item.quantity || 1);
+                            existingItem.totalPrice += item.price * (item.quantity || 1);
                         } else {
                             allItems.push({
                                 code: item.code,
@@ -2990,8 +2991,8 @@
                                 style: item.style,
                                 type: item.type,
                                 price: item.price,
-                                quantity: 1,
-                                totalPrice: item.price,
+                                quantity: (item.quantity || 1),
+                                totalPrice: item.price * (item.quantity || 1),
                                 date: order.date,
                                 customerId: order.customerId,
                                 customerName: order.customerName || '未选择'
@@ -3069,14 +3070,14 @@
                     order.items.forEach(item => {
                         const existingItem = allItems.find(i => i.style === item.style /*&& i.customerName === order.customerName*/);
                         if (existingItem) {
-                            existingItem.quantity += 1;
-                            existingItem.totalPrice += item.price;
+                            existingItem.quantity += (item.quantity || 1);
+                            existingItem.totalPrice += item.price * (item.quantity || 1);
                         } else {
                             allItems.push({
                                 style: item.style,
                                 price: item.price,
-                                quantity: 1,
-                                totalPrice: item.price,
+                                quantity: (item.quantity || 1),
+                                totalPrice: item.price * (item.quantity || 1),
                                 customerId: order.customerId,
                                 customerName: order.customerName || '未选择'
                             });
@@ -3129,12 +3130,12 @@
                             if (lastOrderId !== order.id) {
                                 existingItem.quantity += 1;
                             }
-                            existingItem.totalPrice += item.price;
+                            existingItem.totalPrice += item.price * (item.quantity || 1);
                         } else {
                             allItems.push({
                                 price: item.price,
                                 quantity: 1,
-                                totalPrice: item.price,
+                                totalPrice: item.price * (item.quantity || 1),
                                 customerName: order.customerName || '自营'
                             });
                         }
@@ -3178,8 +3179,8 @@
                                         <td>${item.code}</td>
                                         <td>${item.name}</td>
                                         <td>¥${item.price.toFixed(2)}</td>
-                                        <td>1</td>
-                                        <td>¥${item.price.toFixed(2)}</td>
+                                        <td>${item.quantity || 1}</td>
+                                        <td>¥${(item.price * (item.quantity || 1)).toFixed(2)}</td>
                                     `;
                 itemsTable.appendChild(tr);
             });
@@ -3226,17 +3227,37 @@
                 codeInput.value = '';
                 return;
             }
-            // 添加到当前订单
-            currentOrder.items.push({
-                id: product.id,
-                code: product.code,
-                name: product.name,
-                style: product.style,
-                productCustomer: product.customer,
-                type: product.type,
-                price: product.price,
-                cost: product.cost || 0
-            });
+
+
+            // 假设商品有唯一标识符 id
+            const index = currentOrder.items.findIndex(item => item.code === code);
+
+            if (index === -1) {
+                // 商品不存在，添加新商品，设置数量为1
+                // 添加到当前订单
+                currentOrder.items.push({
+                    id: product.id,
+                    code: product.code,
+                    name: product.name,
+                    style: product.style,
+                    productCustomer: product.customer,
+                    type: product.type,
+                    price: product.price,
+                    cost: product.cost || 0,
+                    quantity: 1
+                });
+            } else {
+                // 商品已存在，获取该商品
+                const existingItem = currentOrder.items[index];
+
+                // 数量加1
+                existingItem.quantity = (existingItem.quantity || 1) + 1;
+
+                // 将该商品移到数组最后
+                currentOrder.items.splice(index, 1);  // 从原位置移除
+                currentOrder.items.push(existingItem); // 添加到数组末尾
+            }
+
 
             // 更新显示
             renderCurrentOrder();
@@ -3302,7 +3323,7 @@
                     if (!products[productsIndex].stock) {
                         products[productsIndex].stock = 0;
                     }
-                    products[productsIndex].stock = products[productsIndex].stock - 1;
+                    products[productsIndex].stock = products[productsIndex].stock - (item.quantity || 1);
                 }
 
                 //更新合作方的金额
@@ -3311,7 +3332,7 @@
                     if (!customers[customerIndex].totalConsumption) {
                         customers[customerIndex].totalConsumption = 0;
                     }
-                    customers[customerIndex].totalConsumption += item.price;
+                    customers[customerIndex].totalConsumption += item.price * (item.quantity || 1);
                     localStorage.setItem('orange-customers', JSON.stringify(customers));
                 }
 
@@ -3700,7 +3721,7 @@
                     orders[orderIndex].items.forEach(item => {
                         const productsIndex = products.findIndex(p => p.id === item.id);
                         if (productsIndex !== -1 && products[productsIndex].stock) {
-                            products[productsIndex].stock += 1;
+                            products[productsIndex].stock += (item.quantity || 1);
                             if (products[productsIndex].stock < 0) {
                                 products[productsIndex].stock = 0;
                             }
@@ -3709,7 +3730,7 @@
 
                         const customerIndex = customers.findIndex(c => c.name === item.productCustomer);
                         if (customerIndex !== -1 && customers[customerIndex].totalConsumption) {
-                            customers[customerIndex].totalConsumption -= item.price;
+                            customers[customerIndex].totalConsumption -= item.price * (item.quantity || 1);
                             if (customers[customerIndex].totalConsumption < 0) {
                                 customers[customerIndex].totalConsumption = 0;
                             }
@@ -3973,12 +3994,16 @@
                     '客户ID': order.customerId || '-1',
                     '客户': order.customerName || '未选择',
                     '总金额': order.total,
+                    '总数量': order.num || (order.items.reduce((num, item) => num + (item.quantity || 1), 0)),
                     '商品编号': item.code,
                     '商品名称': item.name,
                     '商品款式': item.style,
                     '商品合作方': item.productCustomer || '自营',
                     '商品类型': item.type,
-                    '商品单价': item.price
+                    '商品单价': item.price,
+                    '商品数量': item.quantity || 1,
+                    '商品总价': ((item.quantity || 1) * item.price).toFixed(2)
+
                 }))
             );
 
@@ -4038,6 +4063,7 @@
                                     id: orderId,
                                     date: new Date(item['日期'] || new Date()),
                                     total: parseFloat(item['总金额'] || 0),
+                                    num: parseFloat(item['总数量'] || 0),
                                     customerName: item['客户'] || '',
                                     customerId: item['客户ID'] || -1,
                                     items: []
@@ -4050,7 +4076,8 @@
                                 style: item['商品款式'] || '',
                                 productCustomer: item['商品合作方'] || '自营',
                                 type: item['商品类型'] || '普通',
-                                price: parseFloat(item['商品单价'] || 0)
+                                price: parseFloat(item['商品单价'] || 0),
+                                quantity: parseFloat(item['商品数量'] || 1)
                             });
                         });
 
@@ -4121,7 +4148,7 @@
                     previewBody.appendChild(tr);
                 }
             } else if (importType === 'orders') {
-                previewHead.innerHTML = `<tr><th>编号</th><th>名称</th><th>款式</th><th>合作方</th><th>类型</th><th>价格</th></tr>`;
+                previewHead.innerHTML = `<tr><th>编号</th><th>名称</th><th>款式</th><th>合作方</th><th>类型</th><th>单价</th><th>数量</th><th>总价</th></tr>`;
                 // 显示订单预览
                 const previewItems = dataToImport.slice(0, 5);
 
@@ -4145,7 +4172,8 @@
                                                 <td>${item.productCustomer}</td>
                                                 <td>${item.type}</td>
                                                 <td>¥${item.price.toFixed(2)}</td>
-                                                <td colspan="2"></td>
+                                                <td>${item.quantity || 1}</td >
+                                                <td>¥${((item.quantity || 1) * item.price).toFixed(2)}</td >
                                             `;
                         previewBody.appendChild(itemTr);
                     });
@@ -4546,15 +4574,23 @@
 
                 filteredOrders.forEach(order => {
                     order.items.forEach(item => {
-                        totalPrice = totalPrice + item.price;
-                        totalCost = totalCost + (item.cost || (products.find(i => i.code === item.code).cost || 0));
+                        let itemPrice = item.price * (item.quantity || 1);
+                        let itemCost = (item.cost * (item.quantity || 1) || (products.find(i => i.code === item.code).cost * (item.quantity || 1) || 0));
+
+                        totalPrice = totalPrice + itemPrice;
+                        totalCost = totalCost + itemCost;
+                        //totalCost = totalCost + (item.cost || (products.find(i => i.code === item.code).cost || 0));
                     })
                 });
             } else {
                 orders.forEach(order => {
                     order.items.forEach(item => {
-                        totalPrice = totalPrice + item.price;
-                        totalCost = totalCost + (item.cost || (products.find(i => i.code === item.code).cost || 0));
+                        let itemPrice = item.price * (item.quantity || 1);
+                        let itemCost = (item.cost * (item.quantity || 1) || (products.find(i => i.code === item.code).cost * (item.quantity || 1) || 0));
+
+                        totalPrice = totalPrice + itemPrice;
+                        totalCost = totalCost + itemCost;
+                        //totalCost = totalCost + (item.cost || (products.find(i => i.code === item.code).cost || 0));
                     })
                 });
 
