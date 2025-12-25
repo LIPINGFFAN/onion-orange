@@ -2196,7 +2196,7 @@
 
 
     <script>
-        // 数据存储
+    // 数据存储
         let products = JSON.parse(localStorage.getItem('orange-products')) || [];
         let orders = JSON.parse(localStorage.getItem('orange-orders')) || [];
         let customers = JSON.parse(localStorage.getItem('orange-customers')) || [];
@@ -2623,14 +2623,14 @@
 
             if (products.length === 0) {
                 productsList.innerHTML = `
-                                        <div class="text-center py-5">
-                                            <i class="fas fa-box-open fa-3x mb-3 text-muted"></i>
-                                            <p class="text-muted">暂无商品，请添加</p>
-                                            <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#productModal">
-                                                <i class="fas fa-plus me-2"></i>添加商品
-                                            </button>
-                                        </div>
-                                    `;
+                                    <div class="text-center py-5">
+                                        <i class="fas fa-box-open fa-3x mb-3 text-muted"></i>
+                                        <p class="text-muted">暂无商品，请添加</p>
+                                        <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#productModal">
+                                            <i class="fas fa-plus me-2"></i>添加商品
+                                        </button>
+                                    </div>
+                                `;
                 return;
             }
 
@@ -2641,23 +2641,23 @@
                 const productItem = document.createElement('div');
                 productItem.className = 'product-item';
                 productItem.innerHTML = `
-                                        <div>
-                                            <h6 class="mb-1 list-overtext" style="max-width:${window.innerWidth - 212}px;">${product.name}（${product.style}）</h6>
-                                            <small class="text-muted">编号: ${product.code} | 库存: <span style="color:${color}">${product.stock}<span></small>
-                                            <div class="mt-1">
-                                                <span class="badge ${getTypeClass(product.type)}">${product.type}</span>
-                                                <span class="badge bg-primary">¥${product.price.toFixed(2)}</span>
-                                            </div>
+                                    <div>
+                                        <h6 class="mb-1 list-overtext" style="max-width:${window.innerWidth - 212}px;">${product.name}（${product.style}）</h6>
+                                        <small class="text-muted">编号: ${product.code} | 库存: <span style="color:${color}">${product.stock}<span></small>
+                                        <div class="mt-1">
+                                            <span class="badge ${getTypeClass(product.type)}">${product.type}</span>
+                                            <span class="badge bg-primary">¥${product.price.toFixed(2)}</span>
                                         </div>
-                                        <div>
-                                            <button class="btn btn-sm btn-outline-primary edit-product me-1" data-id="${product.id}">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-danger delete-product" data-id="${product.id}">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    `;
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-primary edit-product me-1" data-id="${product.id}">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger delete-product" data-id="${product.id}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                `;
 
                 // 添加点击事件显示条形码
                 productItem.addEventListener('click', function (e) {
@@ -2693,14 +2693,14 @@
 
             if (customers.length === 0) {
                 customersList.innerHTML = `
-                                        <div class="text-center py-5">
-                                            <i class="fas fa-users fa-3x mb-3 text-muted"></i>
-                                            <p class="text-muted">暂无客户，请添加</p>
-                                            <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#customerModal">
-                                                <i class="fas fa-plus me-2"></i>添加客户
-                                            </button>
-                                        </div>
-                                    `;
+                                    <div class="text-center py-5">
+                                        <i class="fas fa-users fa-3x mb-3 text-muted"></i>
+                                        <p class="text-muted">暂无客户，请添加</p>
+                                        <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#customerModal">
+                                            <i class="fas fa-plus me-2"></i>添加客户
+                                        </button>
+                                    </div>
+                                `;
                 return;
             }
 
@@ -2710,23 +2710,23 @@
                 const customerItem = document.createElement('div');
                 customerItem.className = 'customer-item';
                 customerItem.innerHTML = `
-                                        <div>
-                                            <h6 class="mb-1 list-overtext" style="max-width:${window.innerWidth - 212}px;">${customer.name}</h6>
-                                            <small class="text-muted">编号: ${customer.id}</small>
-                                            <div class="mt-1">
-                                                <span class="badge ${getTypeClass(customer.type)} ">${customer.type || `待设置`}</span>
-                                                <span class="badge bg-success">消费: ¥${customer.totalConsumption ? customer.totalConsumption.toFixed(2) : '0.00'}</span>
-                                            </div>
+                                    <div>
+                                        <h6 class="mb-1 list-overtext" style="max-width:${window.innerWidth - 212}px;">${customer.name}</h6>
+                                        <small class="text-muted">编号: ${customer.id}</small>
+                                        <div class="mt-1">
+                                            <span class="badge ${getTypeClass(customer.type)} ">${customer.type || `待设置`}</span>
+                                            <span class="badge bg-success">消费: ¥${customer.totalConsumption ? customer.totalConsumption.toFixed(2) : '0.00'}</span>
                                         </div>
-                                        <div>
-                                            <button class="btn btn-sm btn-outline-primary edit-customer me-1" data-id="${customer.id}">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-danger delete-customer" data-id="${customer.id}">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    `;
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-primary edit-customer me-1" data-id="${customer.id}">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger delete-customer" data-id="${customer.id}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                `;
                 customersList.appendChild(customerItem);
             });
 
@@ -2766,11 +2766,11 @@
 
             if (filteredCustomers.length === 0) {
                 customersList.innerHTML = `
-                                        <div class="text-center py-4">
-                                            <i class="fas fa-search fa-2x mb-3 text-muted"></i>
-                                            <p class="text-muted">没有找到匹配的客户</p>
-                                        </div>
-                                    `;
+                                    <div class="text-center py-4">
+                                        <i class="fas fa-search fa-2x mb-3 text-muted"></i>
+                                        <p class="text-muted">没有找到匹配的客户</p>
+                                    </div>
+                                `;
                 return;
             }
 
@@ -2778,23 +2778,23 @@
                 const customerItem = document.createElement('div');
                 customerItem.className = 'customer-item';
                 customerItem.innerHTML = `
-                                        <div>
-                                            <h6 class="mb-1">${customer.name}</h6>
-                                            <small class="text-muted">编号: ${customer.code}</small>
-                                            <div class="mt-1">
-                                                <span class="badge ${getTypeClass(customer.type)} ">${customer.type || `待设置`}</span>
-                                                <span class="badge bg-success">消费: ¥${customer.totalConsumption ? customer.totalConsumption.toFixed(2) : '0.00'}</span>
-                                            </div>
+                                    <div>
+                                        <h6 class="mb-1">${customer.name}</h6>
+                                        <small class="text-muted">编号: ${customer.code}</small>
+                                        <div class="mt-1">
+                                            <span class="badge ${getTypeClass(customer.type)} ">${customer.type || `待设置`}</span>
+                                            <span class="badge bg-success">消费: ¥${customer.totalConsumption ? customer.totalConsumption.toFixed(2) : '0.00'}</span>
                                         </div>
-                                        <div>
-                                            <button class="btn btn-sm btn-outline-primary edit-customer me-1" data-id="${customer.id}">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-danger delete-customer" data-id="${customer.id}">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    `;
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-primary edit-customer me-1" data-id="${customer.id}">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger delete-customer" data-id="${customer.id}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                `;
                 customersList.appendChild(customerItem);
             });
 
@@ -2822,11 +2822,11 @@
 
             if (currentOrder.items.length === 0) {
                 orderItems.innerHTML = `
-                                        <div class="text-center py-4">
-                                            <i class="fas fa-shopping-cart fa-2x mb-3 text-muted"></i>
-                                            <p class="text-muted">暂无商品，请扫描添加</p>
-                                        </div>
-                                    `;
+                                    <div class="text-center py-4">
+                                        <i class="fas fa-shopping-cart fa-2x mb-3 text-muted"></i>
+                                        <p class="text-muted">暂无商品，请扫描添加</p>
+                                    </div>
+                                `;
                 document.getElementById('order-total').textContent = '¥0.00';
                 document.getElementById('order-num').textContent = '总计：0 件商品';
                 return;
@@ -2841,19 +2841,19 @@
                 itemElement.className = 'current-order-item';
 
                 itemElement.innerHTML = `
-                                    <div>
-                                        <h6 class="mb-0 list-overtext-currentorder" style="font-size: ${index == currentOrder.items.length - 1 ? 1.2 : 1}rem;font-weight: 700 !important;max-width:${window.innerWidth - 282}px;">${item.name}</h6>
-                                        <small class="text-muted">${item.style}</small><small class="text-muted">×${item.quantity || 1}</small>
-                                    </div>
-                                    <div class="d-flex align-items-center">
-                                            <span class="me-3 fw-bold price-editable tag-currentorder-price2" data-index="${index}" data-original-price="${item.price}">
-                                                ¥${(item.price * (item.quantity || 1)).toFixed(2)}
-                                            </span>
-                                        <button class="btn btn-sm btn-outline-danger remove-item" data-index="${index}">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                    </div>
-                                `   ;
+                                <div>
+                                    <h6 class="mb-0 list-overtext-currentorder" style="font-size: ${index == currentOrder.items.length - 1 ? 1.2 : 1}rem;font-weight: 700 !important;max-width:${window.innerWidth - 282}px;">${item.name}</h6>
+                                    <small class="text-muted">${item.style}</small><small class="text-muted">×${item.quantity || 1}</small>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                        <span class="me-3 fw-bold price-editable tag-currentorder-price2" data-index="${index}" data-original-price="${item.price}">
+                                            ¥${(item.price * (item.quantity || 1)).toFixed(2)}
+                                        </span>
+                                    <button class="btn btn-sm btn-outline-danger remove-item" data-index="${index}">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            `   ;
                 orderItems.appendChild(itemElement);
             }
 
@@ -2880,11 +2880,11 @@
 
             if (orders.length === 0) {
                 ordersList.innerHTML = `
-                                        <div class="text-center py-5">
-                                            <i class="fas fa-receipt fa-3x mb-3 text-muted"></i>
-                                            <p class="text-muted">暂无订单</p>
-                                        </div>
-                                    `;
+                                    <div class="text-center py-5">
+                                        <i class="fas fa-receipt fa-3x mb-3 text-muted"></i>
+                                        <p class="text-muted">暂无订单</p>
+                                    </div>
+                                `;
                 return;
             }
 
@@ -2908,23 +2908,23 @@
 
                 orderItem.className = 'order-item';
                 orderItem.innerHTML = `
-                                        <div>
-                                            <h6 class="mb-1 list-overtext variation-2" style="max-width:${window.innerWidth - 222}px;">${content}</h6>
-                                            <small class="text-muted">${orderDate}</small>
-                                            <div class="mt-1">
-                                                <span class="badge bg-primary view-order" data-id="${order.id}" style="cursor: pointer;">${order.num || (order.items.reduce((num, item) => num + (item.quantity || 1), 0))} 件商品</span>
-                                                <span class="badge bg-success">¥${order.total.toFixed(2)}</span>
-                                            </div>
+                                    <div>
+                                        <h6 class="mb-1 list-overtext variation-2" style="max-width:${window.innerWidth - 222}px;">${content}</h6>
+                                        <small class="text-muted">${orderDate}</small>
+                                        <div class="mt-1">
+                                            <span class="badge bg-primary view-order" data-id="${order.id}" style="cursor: pointer;">${order.num || (order.items.reduce((num, item) => num + (item.quantity || 1), 0))} 件商品</span>
+                                            <span class="badge bg-success">¥${order.total.toFixed(2)}</span>
                                         </div>
-                                        <div>
-                                            <button class="btn btn-sm btn-outline-info view-order me-1" data-id="${order.id}">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-danger delete-order" data-id="${order.id}">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    `;
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-info view-order me-1" data-id="${order.id}">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger delete-order" data-id="${order.id}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                `;
                 //<button class="btn btn-sm btn-outline-warning edit-order me-1" data-id="${order.id}">
                 //    <i class="fas fa-edit"></i>
                 //</button>
@@ -3019,13 +3019,13 @@
                 filteredAllItems.forEach(item => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                                        <td>${item.customerName}</td>
-                                        <td>${item.name}</td>
-                                        <td>${item.quantity}</td>
-                                        <td>¥${item.totalPrice.toFixed(2)}</td>
+                                    <td>${item.customerName}</td>
+                                    <td>${item.name}</td>
+                                    <td>${item.quantity}</td>
+                                    <td>¥${item.totalPrice.toFixed(2)}</td>
 
 
-                                     `;
+                                 `;
                     saleList.appendChild(row);
                 });
             } else {
@@ -3093,10 +3093,10 @@
                 filteredAllItems.forEach(item => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                                    <td>${item.style}</td>
-                                    <td>${item.quantity}</td>
-                                    <td>¥${item.totalPrice.toFixed(2)}</td>
-                                    `;
+                                <td>${item.style}</td>
+                                <td>${item.quantity}</td>
+                                <td>¥${item.totalPrice.toFixed(2)}</td>
+                                `;
                     categoryData.push({
                         name: item.style,
                         count: item.quantity,
@@ -3147,11 +3147,11 @@
                 allItems.forEach(item => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                                        <td>${item.customerName}</td>
-                                        <td>${item.quantity}</td>
-                                        <td>¥${item.totalPrice.toFixed(2)}</td>
-                                        <td>¥${(item.totalPrice / item.quantity).toFixed(2)}</td>
-                                     `;
+                                    <td>${item.customerName}</td>
+                                    <td>${item.quantity}</td>
+                                    <td>¥${item.totalPrice.toFixed(2)}</td>
+                                    <td>¥${(item.totalPrice / item.quantity).toFixed(2)}</td>
+                                 `;
                     saleList.appendChild(row);
                 });
             } else {
@@ -3176,12 +3176,12 @@
             order.items.forEach(item => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                                        <td>${item.code}</td>
-                                        <td>${item.name}</td>
-                                        <td>¥${item.price.toFixed(2)}</td>
-                                        <td>${item.quantity || 1}</td>
-                                        <td>¥${(item.price * (item.quantity || 1)).toFixed(2)}</td>
-                                    `;
+                                    <td>${item.code}</td>
+                                    <td>${item.name}</td>
+                                    <td>¥${item.price.toFixed(2)}</td>
+                                    <td>${item.quantity || 1}</td>
+                                    <td>¥${(item.price * (item.quantity || 1)).toFixed(2)}</td>
+                                `;
                 itemsTable.appendChild(tr);
             });
 
@@ -3595,11 +3595,11 @@
 
             if (filteredProducts.length === 0) {
                 productsList.innerHTML = `
-                                        <div class="text-center py-4">
-                                            <i class="fas fa-search fa-2x mb-3 text-muted"></i>
-                                            <p class="text-muted">没有找到匹配的商品</p>
-                                        </div>
-                                    `;
+                                    <div class="text-center py-4">
+                                        <i class="fas fa-search fa-2x mb-3 text-muted"></i>
+                                        <p class="text-muted">没有找到匹配的商品</p>
+                                    </div>
+                                `;
                 return;
             }
 
@@ -3608,23 +3608,23 @@
                 const productItem = document.createElement('div');
                 productItem.className = 'product-item';
                 productItem.innerHTML = `
-                                        <div>
-                                            <h6 class="mb-1 list-overtext" style="max-width:${window.innerWidth - 212}px;">${product.name}（${product.style}）</h6>
-                                            <small class="text-muted">编号: ${product.code} | 库存: <span style="color:${color}">${product.stock}<span></small>
-                                            <div class="mt-1">
-                                                <span class="badge ${getTypeClass(product.type)}">${product.type}</span>
-                                                <span class="badge bg-primary">¥${product.price.toFixed(2)}</span>
-                                            </div>
+                                    <div>
+                                        <h6 class="mb-1 list-overtext" style="max-width:${window.innerWidth - 212}px;">${product.name}（${product.style}）</h6>
+                                        <small class="text-muted">编号: ${product.code} | 库存: <span style="color:${color}">${product.stock}<span></small>
+                                        <div class="mt-1">
+                                            <span class="badge ${getTypeClass(product.type)}">${product.type}</span>
+                                            <span class="badge bg-primary">¥${product.price.toFixed(2)}</span>
                                         </div>
-                                        <div>
-                                            <button class="btn btn-sm btn-outline-primary edit-product me-1" data-id="${product.id}">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-danger delete-product" data-id="${product.id}">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    `;
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-primary edit-product me-1" data-id="${product.id}">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger delete-product" data-id="${product.id}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                `;
 
                 // 添加点击事件显示条形码
                 productItem.addEventListener('click', function (e) {
@@ -3789,11 +3789,11 @@
 
             if (filteredOrders.length === 0) {
                 filterResults.innerHTML = `
-                                        <div class="text-center py-4">
-                                            <i class="fas fa-search fa-2x mb-3 text-muted"></i>
-                                            <p class="text-muted">没有找到指定时间段的订单</p>
-                                        </div>
-                                    `;
+                                    <div class="text-center py-4">
+                                        <i class="fas fa-search fa-2x mb-3 text-muted"></i>
+                                        <p class="text-muted">没有找到指定时间段的订单</p>
+                                    </div>
+                                `;
                 return;
             }
 
@@ -3803,20 +3803,20 @@
                 const orderItem = document.createElement('div');
                 orderItem.className = 'order-item';
                 orderItem.innerHTML = `
-                                        <div>
-                                            <h6 class="mb-1">订单: ${order.id}</h6>
-                                            <small class="text-muted">${orderDate} | 客户: ${order.customerName || '未选择'}</small>
-                                            <div class="mt-1">
-                                                <span class="badge bg-primary">${order.items.length} 件商品</span>
-                                                <span class="badge bg-success">¥${order.total.toFixed(2)}</span>
-                                            </div>
+                                    <div>
+                                        <h6 class="mb-1">订单: ${order.id}</h6>
+                                        <small class="text-muted">${orderDate} | 客户: ${order.customerName || '未选择'}</small>
+                                        <div class="mt-1">
+                                            <span class="badge bg-primary">${order.items.length} 件商品</span>
+                                            <span class="badge bg-success">¥${order.total.toFixed(2)}</span>
                                         </div>
-                                        <div>
-                                            <button class="btn btn-sm btn-outline-info view-order me-1" data-id="${order.id}">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                        </div>
-                                    `;
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-info view-order me-1" data-id="${order.id}">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                `;
                 filterResults.appendChild(orderItem);
             });
 
@@ -3880,8 +3880,8 @@
                 order.items.forEach(item => {
                     const existingItem = allItems.find(i => i.code === item.code && i.customerName === order.customerName);
                     if (existingItem) {
-                        existingItem.quantity += 1;
-                        existingItem.totalPrice += item.price;
+                        existingItem.quantity += (item.quantity || 1);
+                        existingItem.totalPrice += item.price * (item.quantity || 1);
                     } else {
                         allItems.push({
                             code: item.code,
@@ -3889,8 +3889,8 @@
                             style: item.style,
                             type: item.type,
                             price: item.price,
-                            quantity: 1,
-                            totalPrice: item.price,
+                            quantity: (item.quantity || 1),
+                            totalPrice: item.price * (item.quantity || 1),
                             customerName: order.customerName || '未选择'
                         });
                     }
@@ -4131,14 +4131,14 @@
                 previewItems.forEach(item => {
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
-                                            <td>${item.code}</td>
-                                            <td>${item.name}</td>
-                                            <td>${item.style}</td>
-                                            <td>${item.customer}</td>
-                                            <td>${item.type}</td>
-                                            <td>¥${item.price.toFixed(2)}</td>
-                                            <td>${item.stock.toFixed(2)}</td>
-                                        `;
+                                        <td>${item.code}</td>
+                                        <td>${item.name}</td>
+                                        <td>${item.style}</td>
+                                        <td>${item.customer}</td>
+                                        <td>${item.type}</td>
+                                        <td>¥${item.price.toFixed(2)}</td>
+                                        <td>${item.stock.toFixed(2)}</td>
+                                    `;
                     previewBody.appendChild(tr);
                 });
 
@@ -4155,26 +4155,26 @@
                 previewItems.forEach(order => {
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
-                                            <td colspan="2"><strong>订单号: ${order.id}</strong></td>
-                                            <td>日期: ${new Date(order.date).toLocaleString()}</td>
-                                            <td>客户: ${order.customerName || '未选择'}</td>
-                                            <td>总计: ¥${order.total.toFixed(2)}</td>
-                                        `;
+                                        <td colspan="2"><strong>订单号: ${order.id}</strong></td>
+                                        <td>日期: ${new Date(order.date).toLocaleString()}</td>
+                                        <td>客户: ${order.customerName || '未选择'}</td>
+                                        <td>总计: ¥${order.total.toFixed(2)}</td>
+                                    `;
                     previewBody.appendChild(tr);
 
                     // 显示订单中的商品
                     order.items.forEach(item => {
                         const itemTr = document.createElement('tr');
                         itemTr.innerHTML = `
-                                                <td>${item.code}</td>
-                                                <td>${item.name}</td>
-                                                <td>${item.style}</td>
-                                                <td>${item.productCustomer}</td>
-                                                <td>${item.type}</td>
-                                                <td>¥${item.price.toFixed(2)}</td>
-                                                <td>${item.quantity || 1}</td >
-                                                <td>¥${((item.quantity || 1) * item.price).toFixed(2)}</td >
-                                            `;
+                                            <td>${item.code}</td>
+                                            <td>${item.name}</td>
+                                            <td>${item.style}</td>
+                                            <td>${item.productCustomer}</td>
+                                            <td>${item.type}</td>
+                                            <td>¥${item.price.toFixed(2)}</td>
+                                            <td>${item.quantity || 1}</td >
+                                            <td>¥${((item.quantity || 1) * item.price).toFixed(2)}</td >
+                                        `;
                         previewBody.appendChild(itemTr);
                     });
                 });
@@ -4192,12 +4192,12 @@
                 previewItems.forEach(customer => {
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
-                                            <td>${customer.id}</td>
-                                            <td>${customer.name}</td>
-                                            <td>${customer.type}</td>
-                                            <td>¥${customer.totalConsumption.toFixed(2)}</td>
-                                            <td>${customer.code}</td>
-                                        `;
+                                        <td>${customer.id}</td>
+                                        <td>${customer.name}</td>
+                                        <td>${customer.type}</td>
+                                        <td>¥${customer.totalConsumption.toFixed(2)}</td>
+                                        <td>${customer.code}</td>
+                                    `;
                     previewBody.appendChild(tr);
                 });
                 /*<td colspan="2"></td>*/
@@ -4378,9 +4378,9 @@
             const alert = document.createElement('div');
             alert.className = `alert alert-${type} alert-dismissible fade floating-alert`;
             alert.innerHTML = `
-                                    <strong>${getAlertTitle(type)}</strong> ${message}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                `;
+                                <strong>${getAlertTitle(type)}</strong> ${message}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            `;
 
             // 添加到body
             document.body.appendChild(alert);
@@ -4718,8 +4718,8 @@
                         const countPercent = (data.count / totalCount * 100).toFixed(1);
                         const pricePercent = (data.totalPrice / totalPrice * 100).toFixed(1);
                         return `${params.name}<br/>
-                                        数量: ${data.count} (${countPercent}%)<br/>
-                                        总价: ¥${data.totalPrice.toLocaleString()} (${pricePercent}%)`;
+                                    数量: ${data.count} (${countPercent}%)<br/>
+                                    总价: ¥${data.totalPrice.toLocaleString()} (${pricePercent}%)`;
                     }
                 },
                 legend: {
@@ -5096,27 +5096,27 @@
         // 在 showBarcodeModal 函数中使用 JsBarcode
         function showBarcodeModal(barcodeValue, name) {
             const modalHTML = `
-                            <div class="modal fade" id="barcodeModal" tabindex="-1" aria-labelledby="barcodeModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-sm">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="barcodeModalLabel">产品条形码</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div class="modal fade" id="barcodeModal" tabindex="-1" aria-labelledby="barcodeModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="barcodeModalLabel">产品条形码</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center">
+                                        <div class="barcode-container mb-3">
+                                            <svg id="barcode"></svg>
                                         </div>
-                                        <div class="modal-body text-center">
-                                            <div class="barcode-container mb-3">
-                                                <svg id="barcode"></svg>
-                                            </div>
-                                            <p class="text-muted">${name}(${barcodeValue})</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                                        <p class="text-muted">${name}(${barcodeValue})</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
 
-                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        `;
+                        </div>
+                    `;
             //<button type="button" class="btn btn-primary" onclick="printBarcode()">打印</button>
             const existingModal = document.getElementById('barcodeModal');
             if (existingModal) existingModal.remove();
