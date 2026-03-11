@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>开单啦</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.sheetjs.com/xlsx-0.19.3/package/dist/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>-->
 
-    <!--<link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/all.min.css">
     <script src="js/xlsx.full.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/echarts.min.js"></script>
-    <script src="js/JsBarcode.all.min.js"></script>-->
+    <script src="js/JsBarcode.all.min.js"></script>
 
     <style>
         :root {
@@ -3216,6 +3216,12 @@
             const codeInput = document.getElementById('product-scan');
             const code = codeInput.value.trim();
 
+            if (code === 'OK') {
+                completeOrder();
+                codeInput.value = '';
+                return;
+            }
+
             if (!code) {
                 showAlert('请输入商品编号', 'warning');
                 return;
@@ -5160,6 +5166,92 @@
         }, 300);
 
 
+    </script>
+
+    <script>
+        (function () {
+            // 获取金额显示元素
+            const totalSpan = document.getElementById('selected-customer-total');
+            if (!totalSpan) return;
+
+            // 初始化原始数据属性
+            const initOriginal = totalSpan.innerText || '0.00';
+            totalSpan.dataset.originalValue = initOriginal;
+
+            // 创建眼睛图标
+            const eyeIcon = document.createElement('span');
+            eyeIcon.className = 'eye-icon';
+            eyeIcon.style.cursor = 'pointer';
+            eyeIcon.style.marginLeft = '8px';
+            eyeIcon.style.userSelect = 'none';
+            eyeIcon.setAttribute('role', 'button');
+            eyeIcon.setAttribute('aria-label', '切换金额显示');
+            eyeIcon.title = '点击显示金额';
+
+            // 状态：默认隐藏金额
+            let isVisible = false;
+
+            // 更新显示的函数
+            function applyDisplay() {
+                updatingBySelf = true;
+                if (isVisible) {
+                    // 显示真实金额
+                    totalSpan.innerText = totalSpan.dataset.originalValue || '0.00';
+                    eyeIcon.innerText = '👁️';
+                    eyeIcon.title = '点击隐藏金额';
+                } else {
+                    // 隐藏金额，显示占位符
+                    totalSpan.innerText = '***';
+                    eyeIcon.innerText = '🙈';
+                    eyeIcon.title = '点击显示金额';
+                }
+                updatingBySelf = false;
+            }
+
+            // 先手动设置初始隐藏状态（此时 observer 尚未启动，不会触发）
+            totalSpan.innerText = '***';
+            eyeIcon.innerText = '🙈';
+
+            // 将图标插入到金额后面
+            totalSpan.insertAdjacentElement('afterend', eyeIcon);
+
+            // 自更新标志，防止 MutationObserver 循环触发
+            let updatingBySelf = false;
+
+            // 监听金额元素的变化（外部脚本可能修改其内容）
+            const observer = new MutationObserver(function (mutations) {
+                if (updatingBySelf) return;
+
+                const newText = totalSpan.innerText;
+                // 忽略占位符，防止错误覆盖原始值
+                if (newText === '***') return;
+
+                // 更新存储的原始值
+                totalSpan.dataset.originalValue = newText;
+
+                // 如果当前是隐藏状态，需要立即恢复为占位符
+                if (!isVisible) {
+                    updatingBySelf = true;
+                    totalSpan.innerText = '***';
+                    updatingBySelf = false;
+                }
+            });
+
+            // 开始观察文本或子节点变化
+            observer.observe(totalSpan, {
+                characterData: true,
+                childList: true,
+                subtree: true
+            });
+
+            // 点击图标切换显示状态
+            eyeIcon.addEventListener('click', function () {
+                isVisible = !isVisible;
+                applyDisplay();
+            });
+
+            // 可选：当整个客户信息区域显示时，确保金额状态正确（无需额外操作，因为已维护状态）
+        })();
     </script>
 </body>
 </html>
