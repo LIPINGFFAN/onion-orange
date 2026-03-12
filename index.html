@@ -5201,7 +5201,7 @@
                     eyeIcon.title = '点击隐藏金额';
                 } else {
                     // 隐藏金额，显示占位符
-                    totalSpan.innerText = '*'.repeat(document.getElementById('selected-customer-total').dataset.originalValue.length);
+                    totalSpan.innerText = '***';
                     eyeIcon.innerText = '🙈';
                     eyeIcon.title = '点击显示金额';
                 }
@@ -5209,7 +5209,7 @@
             }
 
             // 先手动设置初始隐藏状态（此时 observer 尚未启动，不会触发）
-            totalSpan.innerText = '*'.repeat(document.getElementById('selected-customer-total').dataset.originalValue.length);
+            totalSpan.innerText = '***';
             eyeIcon.innerText = '🙈';
 
             // 将图标插入到金额后面
@@ -5224,7 +5224,7 @@
 
                 const newText = totalSpan.innerText;
                 // 忽略占位符，防止错误覆盖原始值
-                if (newText === '*'.repeat(document.getElementById('selected-customer-total').dataset.originalValue.length)) return;
+                if (newText === '***') return;
 
                 // 更新存储的原始值
                 totalSpan.dataset.originalValue = newText;
@@ -5232,7 +5232,7 @@
                 // 如果当前是隐藏状态，需要立即恢复为占位符
                 if (!isVisible) {
                     updatingBySelf = true;
-                    totalSpan.innerText = '*'.repeat(document.getElementById('selected-customer-total').dataset.originalValue.length);
+                    totalSpan.innerText = '***';
                     updatingBySelf = false;
                 }
             });
