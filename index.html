@@ -5165,6 +5165,70 @@
             renderSaleList();
         }, 300);
 
+        // ---------- 语音播报相关 (核心功能) ----------
+        let chineseVoice = null;               // 缓存中文声音
+        const speechSupported = 'speechSynthesis' in window;
+
+        // 尝试获取中文语音列表并缓存
+        function updateChineseVoice() {
+            if (!speechSupported) return;
+            const voices = window.speechSynthesis.getVoices();
+            chineseVoice = voices.find(v => v.lang && v.lang.toLowerCase().includes('zh')) || null;
+            // 如果找不到中文语音，至少保留null，后面会用默认
+        }
+
+        // 初始化语音：立即尝试一次，并监听 voiceschanged (某些浏览器异步加载)
+        if (speechSupported) {
+            updateChineseVoice();   // 可能返回空数组，但先尝试
+            window.speechSynthesis.onvoiceschanged = function () {
+                updateChineseVoice();
+                console.log('语音列表已更新，中文语音:', chineseVoice ? chineseVoice.name : '未找到');
+            };
+        }
+
+        // 核心播报函数：取消当前播报，立即朗读新文本
+        function speakText(message) {
+            if (!speechSupported) {
+                alert('您的浏览器不支持语音播报功能。请升级或使用Chrome/Edge/Safari。');
+                return false;
+            }
+            try {
+                // 停止正在播放的语音（避免重叠）
+                window.speechSynthesis.cancel();
+
+                const utterance = new SpeechSynthesisUtterance(message);
+                utterance.lang = 'zh-CN';                // 中文
+                utterance.rate = 0.9;                     // 语速稍慢，清晰
+                utterance.pitch = 1.0;
+                utterance.volume = 1;
+
+                // 使用缓存的中文语音（如果有）
+                if (chineseVoice) {
+                    utterance.voice = chineseVoice;
+                } else {
+                    // 后备：尝试重新获取一次语音 (某些浏览器onvoiceschanged可能没触发)
+                    const voices = window.speechSynthesis.getVoices();
+                    const fallbackChinese = voices.find(v => v.lang && v.lang.includes('zh'));
+                    if (fallbackChinese) utterance.voice = fallbackChinese;
+                }
+
+                // 可选监听事件
+                utterance.onend = function () {
+                    console.log('播报完成:', message);
+                };
+                utterance.onerror = function (ev) {
+                    console.warn('播报出错:', ev.error, message);
+                };
+
+                window.speechSynthesis.speak(utterance);
+                return true;
+            } catch (e) {
+                console.error('语音播报异常:', e);
+                alert('语音播报启动失败，但收款功能正常。');
+                return false;
+            }
+        }
+
 
     </script>
 
@@ -5249,6 +5313,7 @@
             eyeIcon.addEventListener('click', function () {
                 isVisible = !isVisible;
                 applyDisplay();
+                document.getElementById('product-scan').focus();
             });
 
             // 可选：当整个客户信息区域显示时，确保金额状态正确（无需额外操作，因为已维护状态）
