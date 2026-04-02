@@ -2164,10 +2164,12 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn" id="startQueueBtn">▶播放</button>
-                    <button class="btn" id="pauseQueueBtn">⏸️暂停</button>
-                    <button class="btn" id="resumeQueueBtn">⏯继续</button>
-                    <button class="btn" id="stopQueueBtn">⏹️重置</button>
+                    <div id="queueBox" class="me-auto">
+                        <button class="btn" id="startQueueBtn">▶播放</button>
+                        <button class="btn" id="pauseQueueBtn">⏸️暂停</button>
+                        <button class="btn" id="resumeQueueBtn">⏯继续</button>
+                        <button class="btn" style="display:none" id="stopQueueBtn">⏹️重置</button>
+                    </div>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
                     <button type="button" style="display:none" class="btn btn-primary" id="edit-detail-order">编辑订单</button>
                 </div>
@@ -2566,7 +2568,7 @@
 
             // 监听完全关闭事件
             document.getElementById('orderDetailModal').addEventListener('hidden.bs.modal', function () {
-                stopQueue();
+                pauseQueue();
             });
 
 
@@ -3359,8 +3361,9 @@
         // 查看订单详情
         function viewOrderDetail(orderId, orderMode) {
             let order;
-
             if (orderMode === "normal") {
+                document.getElementById('queueBox').style.display = 'none';
+
                 order = orders.find(o => o.id === orderId);
             } else {
                 order = shipOrders.find(o => o.id === orderId);
@@ -3368,6 +3371,9 @@
                 document.getElementById('pauseQueueBtn').setAttribute('data-id', orderId);
                 document.getElementById('resumeQueueBtn').setAttribute('data-id', orderId);
                 document.getElementById('stopQueueBtn').setAttribute('data-id', orderId);
+
+                document.getElementById('queueBox').style.display = '';
+
             }
             if (!order) return;
 
@@ -5745,7 +5751,7 @@
                     //alert('没有正在播放的队列，请先点击“开始队列播报”');
                 } else if (isPaused) {
                     //alert('队列已处于暂停状态');
-                    showAlert(`队列已处于暂停状态`, 'warning');
+                    //showAlert(`队列已处于暂停状态`, 'warning');
                 }
                 return;
             }
