@@ -2350,10 +2350,10 @@
                         // 自动聚焦到扫描输入框
                         document.getElementById('product-scan').focus();
                     }
-                    if (sectionId === 'history-section') {
-                        renderOrders();
-                        renderShipOrders();
-                    }
+                    //if (sectionId === 'history-section') {
+                    //    renderOrders();
+                    //    renderShipOrders();
+                    //}
                 });
             });
 
@@ -2635,7 +2635,9 @@
             if (confirm('确定要清空所有订单吗？此操作不可恢复！')) {
                 orders = [];
                 localStorage.setItem('orange-orders', JSON.stringify(orders));
+                localStorage.setItem('orange-ship-orders', JSON.stringify(orders));
                 renderOrders();
+                renderShipOrders();
                 showAlert('所有订单已清空', 'success');
             }
         }
@@ -3602,6 +3604,7 @@
 
             renderCurrentOrder();
             renderOrders();
+            renderShipOrders();
 
             // 自动聚焦到扫描输入框
             document.getElementById('product-scan').focus();
