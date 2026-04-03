@@ -2642,7 +2642,7 @@
 
         // 清空所有订单
         function clearAllOrders() {
-            if (orders.length === 0) {
+            if (orders.length === 0 && shipOrders.length === 0) {
                 showAlert('订单列表已经是空的', 'info');
                 return;
             }
