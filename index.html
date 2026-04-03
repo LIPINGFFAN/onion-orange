@@ -2649,8 +2649,9 @@
 
             if (confirm('确定要清空所有订单吗？此操作不可恢复！')) {
                 orders = [];
+                shipOrders = [];
                 localStorage.setItem('orange-orders', JSON.stringify(orders));
-                localStorage.setItem('orange-ship-orders', JSON.stringify(orders));
+                localStorage.setItem('orange-ship-orders', JSON.stringify(shipOrders));
                 renderOrders();
                 renderShipOrders();
                 showAlert('所有订单已清空', 'success');
@@ -3752,6 +3753,7 @@
                 status: 1
             };
             renderCurrentOrder();
+            renderShipOrders();
             // 自动聚焦到扫描输入框
             document.getElementById('product-scan').focus();
         }
@@ -3789,6 +3791,7 @@
                 status: 1
             };
             renderCurrentOrder();
+            renderShipOrders();
             // 自动聚焦到扫描输入框
             document.getElementById('product-scan').focus();
         }
