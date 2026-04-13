@@ -3695,6 +3695,10 @@
             // 更新商品显示
             renderProducts();
 
+            // 从暂存订单中移除该订单
+            shipOrders = shipOrders.filter(o => o.id !== currentOrder.id);
+            localStorage.setItem('orange-ship-orders', JSON.stringify(shipOrders));
+
             showAlert(`订单完成！总计：${currentOrder.items.length}件商品，共消费：¥${currentOrder.total.toFixed(2)}`, 'success');
 
             // 重置当前订单
